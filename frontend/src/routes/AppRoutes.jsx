@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import MemberLayout from '../layouts/MemberLayout'
 import AdminLayout from '../layouts/AdminLayout'
+import AuthLayout from '../layouts/AuthLayout'
 import ProtectedRoute from '../components/common/ProtectedRoute'
 import ErrorPage from '../pages/ErrorPage'
 
@@ -59,6 +60,9 @@ const AppRoutes = () => (
         <Route path="gallery" element={<Gallery />} />
         <Route path="contact" element={<Contact />} />
         <Route path="join-us" element={<JoinUs />} />
+      </Route>
+
+      <Route path="/" element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
