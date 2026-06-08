@@ -1,0 +1,1 @@
+// Placeholder for `Projects` page
