@@ -1,1 +1,3 @@
-// Placeholder for `Internships` admin page
+import { createPage } from '../PageTemplate'
+
+export default createPage('Internships', 'Approve internship programs and placements.')
