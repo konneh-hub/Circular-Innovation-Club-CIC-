@@ -5,6 +5,7 @@ const adminLinks = [
   { label: 'Members', path: '/admin/members' },
   { label: 'Projects', path: '/admin/projects' },
   { label: 'Events', path: '/admin/events' },
+  { label: 'Attendance', path: '/admin/attendance' },
   { label: 'Competitions', path: '/admin/competitions' },
   { label: 'Elections', path: '/admin/elections' },
   { label: 'Funding', path: '/admin/funding' },

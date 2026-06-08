@@ -1,78 +1,164 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { FiDownload, FiShield } from 'react-icons/fi'
+import { toPng } from 'html-to-image'
+import QRCode from 'qrcode'
 import PageHeader from '../../components/common/PageHeader'
 import Button from '../../components/common/Button'
+import MembershipCardPreview from '../../components/cards/MembershipCardPreview'
 import { fetchMembershipCard } from '../../data/memberData'
 
 const MembershipCard = () => {
   const [card, setCard] = useState(null)
+  const [qrCodeUrl, setQrCodeUrl] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [downloading, setDownloading] = useState(false)
+  const [downloadStatus, setDownloadStatus] = useState('')
+  const [error, setError] = useState('')
+  const previewRef = useRef(null)
 
   useEffect(() => {
-    fetchMembershipCard().then(setCard)
+    let active = true
+
+    fetchMembershipCard().then(async (data) => {
+      if (!active) return
+      setCard(data)
+
+      try {
+        const qrText = `${data.verificationUrl}`
+        const url = await QRCode.toDataURL(qrText, {
+          margin: 1,
+          width: 220,
+          color: {
+            dark: '#0f172a',
+            light: '#ffffff',
+          },
+        })
+        setQrCodeUrl(url)
+      } catch (qrError) {
+        setError('Unable to generate QR code. Please refresh the page.')
+      } finally {
+        setLoading(false)
+      }
+    })
+
+    return () => {
+      active = false
+    }
   }, [])
 
+  const downloadCard = async () => {
+    if (!previewRef.current || !card) return
+    setDownloading(true)
+    setError('')
+    setDownloadStatus('')
+
+    try {
+      const dataUrl = await toPng(previewRef.current, {
+        cacheBust: true,
+        backgroundColor: '#0f172a',
+      })
+
+      const link = document.createElement('a')
+      link.href = dataUrl
+      link.download = `${card.memberId}-cic-membership-card.png`
+      link.click()
+      setDownloadStatus('success')
+    } catch (downloadError) {
+      setError('Unable to download the card image. Please try again.')
+    } finally {
+      setDownloading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="rounded-3xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 shadow-sm shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-950/95 dark:text-slate-400">
+        Loading membership card preview...
+      </div>
+    )
+  }
+
   if (!card) {
-    return <div className="rounded-3xl border border-slate-200 bg-white/90 p-8 text-center text-slate-500 shadow-sm shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-950/95 dark:text-slate-400">Loading membership card...</div>
+    return (
+      <div className="rounded-3xl border border-rose-200 bg-rose-50 p-8 text-center text-rose-700 shadow-sm shadow-rose-200/50 dark:border-rose-900 dark:bg-rose-950/95 dark:text-rose-200">
+        Unable to load your membership card. Please refresh or contact support.
+      </div>
+    )
   }
 
   return (
     <section className="space-y-8">
-      <PageHeader title="Membership Card" subtitle="View your CIC membership credentials." />
+      <PageHeader
+        title="Digital Membership Card"
+        subtitle="Generate your CIC membership card, preview the layout, and download a polished credential for events and partner verification."
+      />
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
-        <div className="rounded-[2rem] border border-slate-200 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-8 text-white shadow-xl shadow-slate-950/20">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.32em] text-slate-400">CIC Member</p>
-              <h2 className="mt-2 text-3xl font-semibold">{card.name}</h2>
+      <div className="grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
+        <div className="space-y-6">
+          <MembershipCardPreview ref={previewRef} card={card} qrCodeUrl={qrCodeUrl} />
+
+          <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-950/95 dark:shadow-slate-900/20">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-slate-950 dark:text-white">Card actions</h2>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                  Download a high-resolution PNG of your membership card and keep it ready for CIC events or verification checks.
+                </p>
+              </div>
+              <Button onClick={downloadCard} disabled={downloading} className="flex items-center gap-2">
+                <FiDownload className="h-4 w-4" />
+                {downloading ? 'Downloading...' : downloadStatus === 'success' ? 'Downloaded' : 'Download card'}
+              </Button>
             </div>
-            <span className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white">{card.level}</span>
+            {downloadStatus === 'success' && !error ? (
+              <p className="mt-4 text-sm text-emerald-700 dark:text-emerald-300">Your membership card is ready. Save it securely and show it at CIC events.</p>
+            ) : null}
+            {error ? <p className="mt-4 text-sm text-rose-600 dark:text-rose-300">{error}</p> : null}
+          </div>
+        </div>
+
+        <aside className="space-y-6">
+          <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-950/95 dark:shadow-slate-900/20">
+            <div className="flex items-start gap-4">
+              <span className="grid h-12 w-12 place-items-center rounded-3xl bg-slate-950 text-white">
+                <FiShield className="h-5 w-5" />
+              </span>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-950 dark:text-white">Secure digital badge</h3>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                  Each card includes a scannable QR code that links to membership verification and CIC partner access.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 text-sm text-slate-700 dark:text-slate-300">
+              <div className="rounded-3xl bg-slate-50 p-4 dark:bg-slate-900">
+                <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Member ID</p>
+                <p className="mt-2 font-semibold text-slate-950 dark:text-white">{card.memberId}</p>
+              </div>
+              <div className="rounded-3xl bg-slate-50 p-4 dark:bg-slate-900">
+                <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Verification URL</p>
+                <p className="mt-2 break-all font-semibold text-slate-950 dark:text-white">{card.verificationUrl}</p>
+              </div>
+              <div className="rounded-3xl bg-slate-50 p-4 dark:bg-slate-900">
+                <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Registered</p>
+                <p className="mt-2 font-semibold text-slate-950 dark:text-white">{card.joined}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            <div className="space-y-2 rounded-3xl bg-white/10 p-5">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-300">Member ID</p>
-              <p className="text-lg font-semibold text-white">{card.memberId}</p>
-            </div>
-            <div className="space-y-2 rounded-3xl bg-white/10 p-5">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-300">Expiry</p>
-              <p className="text-lg font-semibold text-white">{card.expiry}</p>
-            </div>
-          </div>
-
-          <div className="mt-8 rounded-3xl bg-white/10 p-6 text-sm text-slate-300">
-            <p className="font-semibold text-white">Tier benefits</p>
-            <ul className="mt-3 space-y-2">
+          <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-950/95 dark:shadow-slate-900/20">
+            <h3 className="text-lg font-semibold text-slate-950 dark:text-white">Membership benefits</h3>
+            <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
               {card.tierBenefits.map((benefit) => (
-                <li key={benefit} className="flex items-center gap-2">
-                  <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+                <li key={benefit} className="flex gap-3">
+                  <span className="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
                   <span>{benefit}</span>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
-
-        <div className="space-y-6 rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-950/95">
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-slate-950 dark:text-white">Membership details</h3>
-            <div className="grid gap-4">
-              <div className="rounded-3xl bg-slate-50 p-5 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">Joined</p>
-                <p className="mt-2 text-lg font-semibold text-slate-950 dark:text-white">{card.joined}</p>
-              </div>
-              <div className="rounded-3xl bg-slate-50 p-5 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">Membership tier</p>
-                <p className="mt-2 text-lg font-semibold text-slate-950 dark:text-white">{card.level} member</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4 rounded-3xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-900">
-            <h3 className="text-lg font-semibold text-slate-950 dark:text-white">Ready to share?</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">Use your CIC membership details when applying for events or partner programs.</p>
-            <Button variant="primary">Copy membership ID</Button>
-          </div>
-        </div>
+        </aside>
       </div>
     </section>
   )

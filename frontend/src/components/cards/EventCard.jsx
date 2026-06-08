@@ -4,6 +4,7 @@ const EventCard = ({
   location,
   type,
   status,
+  description,
   registrations = 0,
   attendance = 0,
   certificates = 0,

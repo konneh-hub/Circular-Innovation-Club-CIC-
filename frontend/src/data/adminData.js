@@ -233,16 +233,174 @@ export const fetchAdminCompetitions = () =>
 
 export const fetchAdminElections = () =>
   delay([
-    { title: 'Leadership Council Election', stage: 'Voting', candidates: 6, date: 'Aug 26, 2026' },
-    { title: 'Mentorship Committee', stage: 'Nomination', candidates: 4, date: 'Sep 05, 2026' },
+    {
+      id: 'election-1',
+      type: 'Leadership Council',
+      title: 'Leadership Council Election',
+      stage: 'Voting',
+      deadline: 'Aug 26, 2026',
+      description: 'Choose the CIC Leadership Council members who will guide community strategy, mentorship, and sustainable growth.',
+      totalVotes: 248,
+      candidates: [
+        {
+          id: 'candidate-1',
+          name: 'Amina Conteh',
+          role: 'Community Advocate',
+          initials: 'AC',
+          experience: '8 years of member-led initiative support',
+          statement: 'I will prioritize inclusive leadership, member-led labs, and transparent decision-making.',
+          votes: 92,
+        },
+        {
+          id: 'candidate-2',
+          name: 'Kofi Adu',
+          role: 'Sustainability Strategist',
+          initials: 'KA',
+          experience: '10 years in circular systems design',
+          statement: 'I will grow CIC’s sustainable innovation pipeline and funding partnerships.',
+          votes: 76,
+        },
+        {
+          id: 'candidate-3',
+          name: 'Lula Kamara',
+          role: 'Innovation Mentor',
+          initials: 'LK',
+          experience: '6 years coaching impact teams',
+          statement: 'I will expand mentorship access and support early-stage impact projects.',
+          votes: 80,
+        },
+      ],
+    },
+    {
+      id: 'election-2',
+      type: 'Mentorship Committee',
+      title: 'Mentorship Committee Election',
+      stage: 'Results',
+      deadline: 'Sep 05, 2026',
+      description: 'Finalize the mentorship committee members who will support new CIC cohorts and learning programs.',
+      totalVotes: 198,
+      candidates: [
+        {
+          id: 'candidate-4',
+          name: 'Fatmata Sesay',
+          role: 'Peer Coach',
+          initials: 'FS',
+          experience: '7 years building learning communities',
+          statement: 'I will launch cohort-based coaching sessions and mentor matching for creative teams.',
+          votes: 72,
+        },
+        {
+          id: 'candidate-5',
+          name: 'Musa Conteh',
+          role: 'Program Lead',
+          initials: 'MC',
+          experience: '9 years managing collaborative programs',
+          statement: 'I will strengthen learning pathways for sustainability and circular design projects.',
+          votes: 64,
+        },
+        {
+          id: 'candidate-6',
+          name: 'Sia Kamara',
+          role: 'Learning Champion',
+          initials: 'SK',
+          experience: '5 years designing education programs',
+          statement: 'I will help members build project skills through mentorship and hands-on workshops.',
+          votes: 62,
+        },
+      ],
+    },
+    {
+      id: 'election-3',
+      type: 'Operations Panel',
+      title: 'Sustainability Operations Panel',
+      stage: 'Nomination',
+      deadline: 'Oct 10, 2026',
+      description: 'Nominations are open for the operations panel that will shape CIC sustainability programs and impact operations.',
+      totalVotes: 0,
+      candidates: [
+        {
+          id: 'candidate-7',
+          name: 'Mariatu Kamara',
+          role: 'Design Operations',
+          initials: 'MK',
+          experience: '4 years managing community programs',
+          statement: 'I will streamline CIC operations and build stronger member collaboration systems.',
+          votes: 0,
+        },
+        {
+          id: 'candidate-8',
+          name: 'Nadia Mansaray',
+          role: 'Community Coordinator',
+          initials: 'NM',
+          experience: '5 years growing engagement networks',
+          statement: 'I will improve communications and make election participation more accessible.',
+          votes: 0,
+        },
+      ],
+    },
   ])
 
 export const fetchAdminFunding = () =>
-  delay([
-    { project: 'Eco Packaging Lab', amount: '$12,000', requestedBy: 'Fatmata Sesay', status: 'Review' },
-    { project: 'Solar Upcycling Lab', amount: '$8,500', requestedBy: 'Amina Conteh', status: 'Approved' },
-    { project: 'Green Infrastructure', amount: '$15,000', requestedBy: 'Kofi Adu', status: 'Pending' },
-  ])
+  delay({
+    totalBudget: 65000,
+    usedBudget: 32250,
+    remainingBudget: 32750,
+    fundingRequests: [
+      {
+        id: 'fund-1',
+        project: 'Eco Packaging Lab',
+        amount: 12000,
+        requestedBy: 'Fatmata Sesay',
+        status: 'Review',
+        requestedOn: 'Jul 12, 2026',
+        purpose: 'Local material testing and design prototyping',
+      },
+      {
+        id: 'fund-2',
+        project: 'Solar Upcycling Lab',
+        amount: 8500,
+        requestedBy: 'Amina Conteh',
+        status: 'Approved',
+        requestedOn: 'Jun 28, 2026',
+        purpose: 'Final build and community prototype launch',
+      },
+      {
+        id: 'fund-3',
+        project: 'Green Infrastructure',
+        amount: 15000,
+        requestedBy: 'Kofi Adu',
+        status: 'Pending',
+        requestedOn: 'Jul 20, 2026',
+        purpose: 'Small-scale urban sustainability pilots',
+      },
+    ],
+    spendingTrend: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      values: [5200, 4300, 6100, 7300, 6800, 5900, 6750],
+    },
+    expenseSummary: [
+      { label: 'Operations', value: 39 },
+      { label: 'Events', value: 27 },
+      { label: 'Research', value: 18 },
+      { label: 'Marketing', value: 16 },
+    ],
+    expenses: [
+      { id: 'exp-1', category: 'Materials', item: 'Recycled packaging supplies', amount: 4200, date: 'Jul 18, 2026', status: 'Paid' },
+      { id: 'exp-2', category: 'Venue', item: 'Community workshop hall', amount: 2800, date: 'Jul 09, 2026', status: 'Paid' },
+      { id: 'exp-3', category: 'Travel', item: 'Partner site visits', amount: 1800, date: 'Jun 30, 2026', status: 'Pending' },
+      { id: 'exp-4', category: 'Equipment', item: 'Solar testing kits', amount: 3600, date: 'Jun 22, 2026', status: 'Approved' },
+    ],
+    sponsors: [
+      { id: 'sp-1', name: 'EcoSphere Labs', contribution: '$18,000', status: 'Active' },
+      { id: 'sp-2', name: 'Circular Venture Fund', contribution: '$12,500', status: 'Active' },
+      { id: 'sp-3', name: 'GreenTech Alliance', contribution: '$7,000', status: 'Pending' },
+    ],
+    reports: [
+      { id: 'rep-1', title: 'Quarterly funding review', status: 'Ready', updated: 'Jul 24, 2026' },
+      { id: 'rep-2', title: 'Sponsor engagement analysis', status: 'Draft', updated: 'Jul 18, 2026' },
+      { id: 'rep-3', title: 'Budget utilization summary', status: 'In review', updated: 'Jul 22, 2026' },
+    ],
+  })
 
 export const fetchAdminPartners = () =>
   delay([
@@ -259,14 +417,73 @@ export const fetchAdminInternships = () =>
 
 export const fetchAdminSustainability = () =>
   delay({
-    metrics: [
-      { name: 'Waste reduction', value: '42%' },
-      { name: 'Renewable sourcing', value: '65%' },
-      { name: 'Community reach', value: '18,500' },
+    totals: {
+      treesPlanted: 12400,
+      wasteRecycled: 58.3,
+      communityReach: 18500,
+      carbonReduced: 4750,
+      activeProjects: 7,
+    },
+    impactTrends: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      datasets: [
+        {
+          name: 'Trees planted',
+          values: [1200, 1380, 1490, 1610, 1720, 1830, 1900],
+          suffix: 'trees',
+          color: 'emerald',
+        },
+        {
+          name: 'Waste recycled',
+          values: [4.5, 5.2, 6.0, 6.8, 7.4, 8.1, 8.3],
+          suffix: 't',
+          color: 'sky',
+        },
+        {
+          name: 'Carbon reduced',
+          values: [520, 610, 690, 740, 810, 900, 980],
+          suffix: 'kg',
+          color: 'amber',
+        },
+      ],
+    },
+    projects: [
+      {
+        id: 'sust-1',
+        title: 'Urban tree planting campaign',
+        impact: '2,700 trees planted',
+        progress: 84,
+        status: 'In progress',
+      },
+      {
+        id: 'sust-2',
+        title: 'Community recycling hub',
+        impact: '58 tonnes diverted',
+        progress: 67,
+        status: 'Active',
+      },
+      {
+        id: 'sust-3',
+        title: 'Carbon offset workshops',
+        impact: '4,750 kg reduced',
+        progress: 52,
+        status: 'Planning',
+      },
+    ],
+    communityInsights: [
+      { label: 'Member workshops', value: '22', detail: 'Hands-on sustainability sessions' },
+      { label: 'Partner sites', value: '14', detail: 'Recycling and research partners' },
+      { label: 'Volunteer hours', value: '1,280', detail: 'Community contribution this term' },
     ],
     initiatives: [
-      { title: 'Plastic-to-Fabric', progress: '82%' },
+      { title: 'Plastic-to-Fabric lab', progress: '82%' },
       { title: 'Circular Labs expansion', progress: '56%' },
+      { title: 'Peer-led climate coaching', progress: '71%' },
+    ],
+    achievements: [
+      { title: 'Community clean-up sprint', value: '1,200 kg collected' },
+      { title: 'Renewable sourcing pilot', value: '65% of materials' },
+      { title: 'Impact fellowship launched', value: '18 new leaders' },
     ],
   })
 

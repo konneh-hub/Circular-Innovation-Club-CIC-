@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout'
 import MemberLayout from '../layouts/MemberLayout'
@@ -13,6 +12,7 @@ import Projects from '../pages/public/Projects'
 import Events from '../pages/public/Events'
 import Competitions from '../pages/public/Competitions'
 import Internships from '../pages/public/Internships'
+import InternshipDetails from '../pages/public/InternshipDetails'
 import Partners from '../pages/public/Partners'
 import Blog from '../pages/public/Blog'
 import Gallery from '../pages/public/Gallery'
@@ -26,8 +26,14 @@ import ForgotPassword from '../pages/auth/ForgotPassword'
 import MemberDashboard from '../pages/member/Dashboard'
 import Profile from '../pages/member/Profile'
 import MembershipCard from '../pages/member/MembershipCard'
+import Attendance from '../pages/member/Attendance'
+import AIChat from '../pages/member/AIChat'
+import AdminAttendance from '../pages/admin/AttendanceDashboard'
 import MyEvents from '../pages/member/MyEvents'
 import MyProjects from '../pages/member/MyProjects'
+import InternshipApplication from '../pages/member/InternshipApplication'
+import MemberInternships from '../pages/member/Internships'
+import MyApplications from '../pages/member/MyApplications'
 import Voting from '../pages/member/Voting'
 import Certificates from '../pages/member/Certificates'
 import Notifications from '../pages/member/Notifications'
@@ -38,6 +44,7 @@ import AdminEvents from '../pages/admin/Events'
 import AdminProjects from '../pages/admin/Projects'
 import AdminCompetitions from '../pages/admin/Competitions'
 import Elections from '../pages/admin/Elections'
+import ElectionResults from '../pages/admin/ElectionResults'
 import Funding from '../pages/admin/Funding'
 import AdminPartners from '../pages/admin/Partners'
 import AdminInternships from '../pages/admin/Internships'
@@ -55,6 +62,7 @@ const AppRoutes = () => (
         <Route path="events" element={<Events />} />
         <Route path="competitions" element={<Competitions />} />
         <Route path="internships" element={<Internships />} />
+        <Route path="internships/:id" element={<InternshipDetails />} />
         <Route path="partners" element={<Partners />} />
         <Route path="blog" element={<Blog />} />
         <Route path="gallery" element={<Gallery />} />
@@ -79,6 +87,11 @@ const AppRoutes = () => (
         <Route index element={<MemberDashboard />} />
         <Route path="profile" element={<Profile />} />
         <Route path="membership-card" element={<MembershipCard />} />
+        <Route path="attendance" element={<Attendance />} />
+        <Route path="internships" element={<MemberInternships />} />
+        <Route path="internships/apply/:id" element={<InternshipApplication />} />
+        <Route path="my-applications" element={<MyApplications />} />
+        <Route path="chat" element={<AIChat />} />
         <Route path="events" element={<MyEvents />} />
         <Route path="projects" element={<MyProjects />} />
         <Route path="voting" element={<Voting />} />
@@ -97,9 +110,11 @@ const AppRoutes = () => (
         <Route index element={<AdminDashboard />} />
         <Route path="members" element={<Members />} />
         <Route path="events" element={<AdminEvents />} />
+        <Route path="attendance" element={<AdminAttendance />} />
         <Route path="projects" element={<AdminProjects />} />
         <Route path="competitions" element={<AdminCompetitions />} />
         <Route path="elections" element={<Elections />} />
+        <Route path="elections/results" element={<ElectionResults />} />
         <Route path="funding" element={<Funding />} />
         <Route path="partners" element={<AdminPartners />} />
         <Route path="internships" element={<AdminInternships />} />

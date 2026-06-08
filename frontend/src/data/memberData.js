@@ -63,9 +63,57 @@ export const fetchMembershipCard = () =>
     name: 'Amina Conteh',
     memberId: 'CIC-04281',
     level: 'Gold',
+    role: 'Community Innovator',
+    organization: 'Circular Innovation Club',
     expiry: 'Dec 2027',
     joined: 'Jan 2025',
+    email: 'amina@cic.club',
+    phone: '+232 76 123 987',
+    verificationUrl: 'https://cic.club/verify/CIC-04281',
     tierBenefits: ['Priority event access', 'Mentor pairing', 'Project funding support'],
+  })
+
+export const fetchAttendanceData = () =>
+  delay({
+    member: {
+      name: 'Amina Conteh',
+      memberId: 'CIC-04281',
+      role: 'Community Innovator',
+      email: 'amina@cic.club',
+    },
+    activeEvent: {
+      eventId: 'event-2026-09',
+      event: 'Climate Innovation Forum',
+      date: 'Sep 06, 2026',
+      location: 'Online',
+      venue: 'Virtual Conference',
+    },
+    history: [
+      {
+        eventId: 'event-2026-08',
+        event: 'Circular Design Sprint',
+        date: 'Aug 18, 2026',
+        location: 'Hybrid',
+        status: 'Present',
+        scannedAt: 'Aug 18, 2026 10:05 AM',
+      },
+      {
+        eventId: 'event-2026-06',
+        event: 'Green Hackathon',
+        date: 'Jun 02, 2026',
+        location: 'Campus Hub',
+        status: 'Present',
+        scannedAt: 'Jun 02, 2026 03:10 PM',
+      },
+      {
+        eventId: 'event-2026-04',
+        event: 'Spring Startup Summit',
+        date: 'Apr 12, 2026',
+        location: 'Conference Center',
+        status: 'Absent',
+        scannedAt: 'Apr 12, 2026 09:15 AM',
+      },
+    ],
   })
 
 export const fetchMemberProjects = () =>
